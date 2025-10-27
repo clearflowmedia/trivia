@@ -29,48 +29,47 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            justify-content: space-between;
-            padding: 30px 20px;
+            justify-content: flex-start;
+            padding: 40px 30px;
+            gap: 30px;
         }
 
         .question-number {
-            font-size: 20px;
+            font-size: 32px;
             font-weight: bold;
-            margin-bottom: 10px;
             color: #ffd700;
             text-align: center;
         }
 
         .timer {
-            font-size: 56px;
+            font-size: 96px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 15px;
             color: #ffd700;
-            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+            text-shadow: 0 0 30px rgba(255, 215, 0, 0.5);
+            line-height: 1;
         }
 
         .question {
-            font-size: 28px;
+            font-size: 48px;
             font-weight: bold;
             text-align: center;
-            margin-bottom: 25px;
             line-height: 1.3;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-            flex-shrink: 0;
+            padding: 0 20px;
         }
 
         .correct-answer-display {
-            font-size: 32px;
+            font-size: 56px;
             font-weight: bold;
             text-align: center;
             background: rgba(76, 175, 80, 0.4);
-            border: 3px solid #4caf50;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+            border: 4px solid #4caf50;
+            border-radius: 20px;
+            padding: 40px 30px;
+            box-shadow: 0 0 40px rgba(76, 175, 80, 0.6);
             display: none;
+            line-height: 1.2;
         }
 
         .correct-answer-display.show {
@@ -92,23 +91,25 @@
         .answers {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-grow: 1;
+            gap: 25px;
+            flex: 1;
+            max-height: 600px;
+            align-content: center;
         }
 
         .answer {
             background: rgba(255, 255, 255, 0.2);
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 22px;
+            padding: 35px 25px;
+            border-radius: 20px;
+            font-size: 38px;
             text-align: center;
             font-weight: 600;
             transition: all 0.5s ease;
-            border: 3px solid rgba(255, 255, 255, 0.3);
+            border: 4px solid rgba(255, 255, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
+            line-height: 1.2;
         }
 
         .answer.correct {
@@ -124,14 +125,13 @@
         }
 
         .tidbit {
-            font-size: 18px;
+            font-size: 36px;
             text-align: center;
-            line-height: 1.5;
+            line-height: 1.4;
             background: rgba(255, 255, 255, 0.15);
-            padding: 20px;
-            border-radius: 15px;
+            padding: 40px 30px;
+            border-radius: 20px;
             display: none;
-            flex-shrink: 0;
             font-style: italic;
         }
 
