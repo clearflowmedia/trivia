@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greek Mythology Trivia - Livestream Edition</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 20px;
+        }
+
+        .question-number {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #ffd700;
+            text-align: center;
+        }
+
+        .timer {
+            font-size: 56px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .question {
+            font-size: 28px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 25px;
+            line-height: 1.3;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            flex-shrink: 0;
+        }
+
+        .correct-answer-display {
+            font-size: 32px;
+            font-weight: bold;
+            text-align: center;
+            background: rgba(76, 175, 80, 0.4);
+            border: 3px solid #4caf50;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+            display: none;
+        }
+
+        .correct-answer-display.show {
+            display: block;
+            animation: slideDown 0.5s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+
+        .answer {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 15px;
+            font-size: 22px;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.5s ease;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .answer.correct {
+            background: rgba(76, 175, 80, 0.4);
+            border-color: #4caf50;
+            box-shadow: 0 0 30px rgba(76, 175, 80, 0.6);
+            transform: scale(1.05);
+        }
+
+        .answer.hidden {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .tidbit {
+            font-size: 18px;
+            text-align: center;
+            line-height: 1.5;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 15px;
+            display: none;
+            flex-shrink: 0;
+            font-style: italic;
+        }
+
+        .tidbit.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="question-number" id="questionNumber">Question 1 of 20</div>
+        <div class="timer" id="timer">30</div>
+        <div class="question" id="question">Who is the king of the Greek gods and god of the sky and thunder?</div>
+        
+        <div class="correct-answer-display" id="correctAnswerDisplay">Zeus</div>
+        
+        <div class="answers" id="answers">
+            <div class="answer" data-index="0">Poseidon</div>
+            <div class="answer" data-index="1">Hades</div>
+            <div class="answer" data-index="2">Zeus</div>
+            <div class="answer" data-index="3">Apollo</div>
+        </div>
+
+        <div class="tidbit" id="tidbit">
+            Zeus is the king of the gods in Greek mythology, ruling from Mount Olympus and wielding the power of thunder and lightning.
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "Who is the king of the Greek gods and god of the sky and thunder?",
+                answers: ["Poseidon", "Hades", "Zeus", "Apollo"],
+                correct: 2,
+                explanation: "Zeus is the king of the gods in Greek mythology, ruling from Mount Olympus and wielding the power of thunder and lightning."
+            },
+            {
+                question: "Who is the Greek god of the sea, earthquakes, and horses?",
+                answers: ["Zeus", "Poseidon", "Ares", "Hermes"],
+                correct: 1,
+                explanation: "Poseidon rules the seas with his trident and is also known as the god of earthquakes and horses."
+            },
+            {
+                question: "Who is the Greek god of the underworld and the dead?",
+                answers: ["Thanatos", "Hades", "Charon", "Erebus"],
+                correct: 1,
+                explanation: "Hades rules the underworld, the realm of the dead, though he is not evil—simply the guardian of the afterlife."
+            },
+            {
+                question: "Who is the Greek goddess of love and beauty, born from sea foam?",
+                answers: ["Hera", "Athena", "Aphrodite", "Artemis"],
+                correct: 2,
+                explanation: "Aphrodite emerged from the sea foam near Cyprus and became the goddess of love, beauty, and desire."
+            },
+            {
+                question: "Who is the messenger god with winged sandals?",
+                answers: ["Apollo", "Hermes", "Eros", "Pan"],
+                correct: 1,
+                explanation: "Hermes serves as the messenger of the gods, known for his speed and his iconic winged sandals and hat."
+            },
+            {
+                question: "Who is the Greek god of wine, festivity, and theater?",
+                answers: ["Bacchus", "Dionysus", "Pan", "Silenus"],
+                correct: 1,
+                explanation: "Dionysus is the god of wine, celebration, and theatrical arts, often depicted with grapevines and a thyrsus staff."
+            },
+            {
+                question: "Who is the goddess of the hunt, wild animals, and the moon?",
+                answers: ["Artemis", "Selene", "Hecate", "Demeter"],
+                correct: 0,
+                explanation: "Artemis is the twin sister of Apollo and protector of wild animals, often depicted with a bow and hunting dogs."
+            },
+            {
+                question: "Which hero killed the Gorgon Medusa by using his shield as a mirror?",
+                answers: ["Theseus", "Heracles", "Perseus", "Bellerophon"],
+                correct: 2,
+                explanation: "Perseus cleverly used his polished shield to view Medusa's reflection, avoiding her deadly gaze while beheading her."
+            },
+            {
+                question: "Who flew too close to the sun with wings made of feathers and wax?",
+                answers: ["Daedalus", "Icarus", "Bellerophon", "Phaethon"],
+                correct: 1,
+                explanation: "Icarus ignored his father's warning and flew too close to the sun, melting the wax in his wings and falling to his death."
+            },
+            {
+                question: "Which Greek hero is famous for his journey home to Ithaca after the Trojan War?",
+                answers: ["Achilles", "Odysseus", "Agamemnon", "Menelaus"],
+                correct: 1,
+                explanation: "Odysseus's ten-year journey home after the Trojan War is chronicled in Homer's epic poem, The Odyssey."
+            },
+            {
+                question: "Who was the greatest warrior of the Trojan War, known for his nearly invincible body except for his heel?",
+                answers: ["Hector", "Ajax", "Achilles", "Patroclus"],
+                correct: 2,
+                explanation: "Achilles was invulnerable except for his heel, where his mother held him when dipping him in the River Styx as a baby."
+            },
+            {
+                question: "Which hero slayed the Minotaur in the labyrinth of Crete?",
+                answers: ["Perseus", "Jason", "Theseus", "Bellerophon"],
+                correct: 2,
+                explanation: "Theseus volunteered as a sacrifice, navigated the labyrinth using Ariadne's thread, and killed the beast."
+            },
+            {
+                question: "What three-headed dog guards the entrance to the underworld?",
+                answers: ["Orthrus", "Cerberus", "Laelaps", "Argos"],
+                correct: 1,
+                explanation: "Cerberus prevents the dead from leaving the underworld and the living from entering without permission."
+            },
+            {
+                question: "What creature has the body of a lion, the head of a woman, and asks riddles to travelers?",
+                answers: ["Chimera", "Sphinx", "Harpy", "Manticore"],
+                correct: 1,
+                explanation: "The Sphinx terrorized Thebes until Oedipus correctly answered her riddle, causing her to destroy herself."
+            },
+            {
+                question: "What fire-breathing creature has the head of a lion, body of a goat, and tail of a serpent?",
+                answers: ["Hydra", "Chimera", "Griffin", "Typhon"],
+                correct: 1,
+                explanation: "The Chimera was slain by the hero Bellerophon while riding the winged horse Pegasus."
+            },
+            {
+                question: "What did King Midas's touch turn everything into?",
+                answers: ["Stone", "Gold", "Bronze", "Salt"],
+                correct: 1,
+                explanation: "King Midas's golden touch became a curse when he couldn't eat or drink, and nearly turned his daughter to gold."
+            },
+            {
+                question: "What gift did the Greeks use to sneak inside the city of Troy and win the war?",
+                answers: ["Trojan Horse", "Golden Apple", "Wooden Ship", "Bronze Gate"],
+                correct: 0,
+                explanation: "Greek soldiers hid inside a giant wooden horse, which the Trojans brought into their city, allowing the Greeks to attack from within."
+            },
+            {
+                question: "Who opened a forbidden jar (often called a box) and released all evils into the world?",
+                answers: ["Helen", "Medea", "Pandora", "Circe"],
+                correct: 2,
+                explanation: "Pandora opened the jar out of curiosity, releasing all evils—but hope remained trapped inside to help humanity endure."
+            },
+            {
+                question: "What golden object did Jason and the Argonauts quest to find?",
+                answers: ["Golden Apple", "Golden Fleece", "Golden Crown", "Golden Harp"],
+                correct: 1,
+                explanation: "The Golden Fleece came from a sacred flying ram and was guarded by a dragon in the kingdom of Colchis."
+            },
+            {
+                question: "Who was punished by the gods to forever roll a boulder up a hill, only to have it roll back down?",
+                answers: ["Tantalus", "Sisyphus", "Ixion", "Prometheus"],
+                correct: 1,
+                explanation: "Sisyphus was condemned to this eternal punishment in Tartarus for his deceitfulness and defiance of the gods."
+            }
+        ];
+
+        let currentQuestion = 0;
+        let timeRemaining = 30;
+        let timer;
+        let hideIndex = 0;
+
+        function startTimer() {
+            timeRemaining = 30;
+            hideIndex = 0;
+            clearInterval(timer);
+            
+            const timerEl = document.getElementById('timer');
+            const answersEl = document.getElementById('answers');
+            const tidbitEl = document.getElementById('tidbit');
+            const correctAnswerDisplayEl = document.getElementById('correctAnswerDisplay');
+            const answers = answersEl.querySelectorAll('.answer');
+            
+            // Reset elements
+            answers.forEach((answer, index) => {
+                answer.classList.remove('hidden', 'correct');
+            });
+            tidbitEl.classList.remove('show');
+            correctAnswerDisplayEl.classList.remove('show');
+
+            // Set initial timer display
+            timerEl.textContent = timeRemaining;
+
+            timer = setInterval(() => {
+                timeRemaining--;
+                timerEl.textContent = timeRemaining;
+
+                // Hide incorrect answers at 25, 20, and 15 seconds (every 5 seconds)
+                if (timeRemaining === 25 || timeRemaining === 20 || timeRemaining === 15) {
+                    hideNextWrongAnswer();
+                }
+
+                // At 15 seconds, show correct answer under question, hide answer grid, and show tidbit
+                if (timeRemaining === 15) {
+                    const q = questions[currentQuestion];
+                    correctAnswerDisplayEl.textContent = q.answers[q.correct];
+                    correctAnswerDisplayEl.classList.add('show');
+                    answersEl.style.display = 'none';
+                    tidbitEl.classList.add('show');
+                }
+
+                // Auto-advance to next question at 0 seconds
+                if (timeRemaining === 0) {
+                    clearInterval(timer); // Stop the timer before advancing
+                    setTimeout(() => {
+                        nextQuestion();
+                    }, 1000); // Wait 1 second at 0 before advancing
+                }
+            }, 1000);
+        }
+
+        function hideNextWrongAnswer() {
+            const answersEl = document.getElementById('answers');
+            const answers = answersEl.querySelectorAll('.answer');
+            const correctIndex = questions[currentQuestion].correct;
+
+            // Find next wrong answer to hide
+            for (let i = hideIndex; i < answers.length; i++) {
+                const index = parseInt(answers[i].getAttribute('data-index'));
+                if (index !== correctIndex && !answers[i].classList.contains('hidden')) {
+                    answers[i].classList.add('hidden');
+                    hideIndex = i + 1;
+                    
+                    // If this was the last wrong answer, highlight the correct one
+                    if (timeRemaining === 0) {
+                        answers[correctIndex].classList.add('correct');
+                    }
+                    return;
+                }
+            }
+        }
+
+        function loadQuestion() {
+            const q = questions[currentQuestion];
+            
+            document.getElementById('questionNumber').textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+            document.getElementById('question').textContent = q.question;
+            document.getElementById('tidbit').textContent = q.explanation;
+
+            const answersEl = document.getElementById('answers');
+            answersEl.style.display = 'grid'; // Reset display
+            answersEl.innerHTML = '';
+            
+            q.answers.forEach((answer, index) => {
+                const div = document.createElement('div');
+                div.className = 'answer';
+                div.setAttribute('data-index', index);
+                div.textContent = answer;
+                answersEl.appendChild(div);
+            });
+
+            startTimer();
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            
+            // Loop back to beginning after all questions
+            if (currentQuestion >= questions.length) {
+                currentQuestion = 0;
+            }
+            
+            loadQuestion();
+        }
+
+        // Initialize
+        loadQuestion();
+    </script>
+</body>
+</html>
